@@ -43,7 +43,7 @@ for (let i = 0; i < posts.length; i++) {
         <img class="post-image" src="${post.post}" alt="${post.name}'s post">
         <div class="post-caption">
             <div class="post-actions">
-                <img class="post-action" src="images/icon-heart.png" alt="Like Icon.">
+                <img class="post-action like-button" src="images/icon-heart.png" alt="Like Icon.">
                 <img class="post-action" src="images/icon-comment.png" alt="Comment Icon.">
                 <img class="post-action" src="images/icon-dm.png" alt="Share Icon.">
             </div>
@@ -53,15 +53,23 @@ for (let i = 0; i < posts.length; i++) {
     `;
 
     const postImage = postContainer.querySelector('.post-image');
-    postImage.addEventListener('dblclick', dblclickImage);
+    postImage.addEventListener('dblclick', likeContent);
+
+    const likeButton = postContainer.querySelector('.like-button');
+    likeButton.addEventListener('click', likeContent);
 }
 
-function dblclickImage(event) {
-    console.log('Image double-clicked:', event.target);
-    var postContainer = event.target.closest('.post-container');
-    var likesCount = postContainer.querySelector('.post-likes');
+function likeContent(event) {
+    const postContainer = event.target.closest('.post-container');
+    const likesCount = postContainer.querySelector('.post-likes');
 
-    var currentLikes = parseInt(likesCount.textContent.split(' ')[0]);
+    const currentLikes = parseInt(likesCount.textContent.split(' ')[0]);
     likesCount.textContent = (currentLikes + 1) + ' likes';
+
+    posts.forEach(post => {
+        if (post.post === event.target.src) {
+            post.likes += 1;
+        }
+    });
 }
 
